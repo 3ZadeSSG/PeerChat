@@ -2,8 +2,6 @@
 A peer to peer chat app using Sockets
 
 
-#=====================================
-#ToDo
-1. Add a database support
-2. Code cleanup
-3. Add a loader
+# Description
+This app implements basics of Socket programming. In main avtivity user can choose its own server's PORT number to receive any incoming messages. And can select the IP and PORT number of target to which he wants to send the message.
+Note: Both Sender and receiver need to be on same network. 
