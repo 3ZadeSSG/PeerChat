@@ -1,18 +1,28 @@
 package com.example.manug.peerchat;
+
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
+import android.widget.ListView;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+
+import static com.example.manug.peerchat.MainActivity.mAdapter;
+
 public class Server extends Thread {
-    TextView t;
-    public Server(TextView t){
-        this.t=t;
+    //TextView t;
+    ListView messageList;
+    ArrayList<Message> messageArray;
+    int port;
+
+    public Server(ListView messageList, ArrayList<Message> messageArray, int port) {
+        this.messageArray = messageArray;
+        this.messageList = messageList;
+        this.port = port;
     }
     ServerSocket welcomeSocket=null;
-    int port=60500;
     @Override
     public void run(){
         try{
@@ -42,9 +52,12 @@ public class Server extends Thread {
             return sentence ;
         }
         protected void onPostExecute(String result) {
-            String s=t.getText().toString();
+           /* String s=t.getText().toString();
             s=s+"\nReceived : "+result;
-            t.setText(s);
+            t.setText(s);*/
+            messageArray.add(new Message("Received: " + result, 1));
+            //responseTextView.setText(responseTextView.getText().toString()+"\nSent : "+result);
+            messageList.setAdapter(mAdapter);
         }
     }
 }

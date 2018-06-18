@@ -1,20 +1,17 @@
 package com.example.manug.peerchat;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     String message="";
@@ -22,15 +19,33 @@ public class MainActivity extends AppCompatActivity {
     EditText ip;
     EditText port;
     TextView responseTextView;
+    static MessageAdapter mAdapter;
+    ListView messageList;
+    ArrayList<Message> messageArray;
+    EditText portText;
+    int myport;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        messageList = findViewById(R.id.message_list);
+        messageArray = new ArrayList<Message>();
+        portText = findViewById(R.id.myPortEditText);
+        mAdapter = new MessageAdapter(this, messageArray);
+        messageList.setAdapter(mAdapter);
         messageTextView=findViewById(R.id.messageEditText);
-        responseTextView=findViewById(R.id.resultTextView);
+        //responseTextView=findViewById(R.id.resultTextView);
         ip=findViewById(R.id.ipEditText);
         port=findViewById(R.id.portEditText);
-        Server s=new Server(responseTextView);
+        //Server s=new Server(responseTextView);
+        //Server s=new Server(messageList,messageArray,port);
+        //s.start();
+    }
+
+    public void startServer(View view) {
+        myport = Integer.parseInt(portText.getText().toString());
+        Server s = new Server(messageList, messageArray, myport);
         s.start();
     }
     public void sendResponse(View view){
@@ -66,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
             return msg;
         }
         protected void onPostExecute(String result) {
-            responseTextView.setText(responseTextView.getText().toString()+"\nSent : "+result);
+            messageArray.add(new Message("Sent: " + result, 0));
+            //responseTextView.setText(responseTextView.getText().toString()+"\nSent : "+result);
+            messageList.setAdapter(mAdapter);
         }
     }
 }
