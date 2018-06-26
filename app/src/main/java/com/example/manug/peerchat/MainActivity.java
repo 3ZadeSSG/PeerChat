@@ -12,7 +12,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
     String message="";
     EditText messageTextView;
@@ -24,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Message> messageArray;
     EditText portText;
     int myport;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +33,8 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MessageAdapter(this, messageArray);
         messageList.setAdapter(mAdapter);
         messageTextView=findViewById(R.id.messageEditText);
-        //responseTextView=findViewById(R.id.resultTextView);
         ip=findViewById(R.id.ipEditText);
         port=findViewById(R.id.portEditText);
-        //Server s=new Server(responseTextView);
-        //Server s=new Server(messageList,messageArray,port);
-        //s.start();
     }
 
     public void startServer(View view) {
@@ -56,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         String str=responseTextView.getText().toString();
         str=str+"\nReceived: "+s;
         responseTextView.setText(str);
-
     }
     public class Client extends AsyncTask<Void,Void,String>{
         String msg;
@@ -71,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 PrintWriter output = new PrintWriter(outToServer);
                 output.println(msg);
                 output.flush();
-               // BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-               // response = input.readLine();
                 clientSocket.close();
             }
             catch (Exception e) {
@@ -82,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         }
         protected void onPostExecute(String result) {
             messageArray.add(new Message("Sent: " + result, 0));
-            //responseTextView.setText(responseTextView.getText().toString()+"\nSent : "+result);
             messageList.setAdapter(mAdapter);
         }
     }

@@ -10,13 +10,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import static com.example.manug.peerchat.MainActivity.mAdapter;
-
 public class Server extends Thread {
-    //TextView t;
     ListView messageList;
     ArrayList<Message> messageArray;
     int port;
-
     public Server(ListView messageList, ArrayList<Message> messageArray, int port) {
         this.messageArray = messageArray;
         this.messageList = messageList;
@@ -52,11 +49,7 @@ public class Server extends Thread {
             return sentence ;
         }
         protected void onPostExecute(String result) {
-           /* String s=t.getText().toString();
-            s=s+"\nReceived : "+result;
-            t.setText(s);*/
             messageArray.add(new Message("Received: " + result, 1));
-            //responseTextView.setText(responseTextView.getText().toString()+"\nSent : "+result);
             messageList.setAdapter(mAdapter);
         }
     }
